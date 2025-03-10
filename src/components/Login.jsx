@@ -7,6 +7,10 @@ export default function Login() {
         event.preventDefault();
         const enteredEmail = email.current.value;
         const enteredPassword = password.current.value;
+
+        // To reset:
+        email.current.value = ''
+        password.current.value = ''
     }
     return (
         <form onSubmit={handleSubmit}>

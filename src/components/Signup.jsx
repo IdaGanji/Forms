@@ -18,8 +18,12 @@ export default function Signup() {
     const acquisitionArray = fd.getAll('acquisition')
     data.acquisition = acquisitionArray
     console.log(data);
+
+    // To reset the form call the reset method on the form element
+    event.target.reset();
   }
   // The button inside a form which is of type=submit calls the onSubmit method of the form element
+  // The button inside a form which is of type=reset calls the reset method on the form element
   return (
     // all the inputs/select/... fields must have the name property for FormData to know of them
     <form onSubmit={handleSubmit}>

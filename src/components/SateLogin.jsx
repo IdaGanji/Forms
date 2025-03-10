@@ -1,8 +1,10 @@
+import { useState } from "react";
 export default function Login() {
   const [enteredValues, setEnteredValues] = useState({
     email: '',
     password: ''
   });
+  const emailIsInvalid = enteredValues.email !== '' && !enteredValues.email.includes('@')
 
   // JS Dynamic key vs Fixed key:  
   // const keyName = "age";
@@ -17,8 +19,15 @@ export default function Login() {
     })
     )
   }
+  // Validating on every key-stroke
+  // problem is that the error will be shown too early for this usecase
   const handleSubmit = (event) => {
     event.preventDefault();
+    // To re-set the form
+    // setEnteredValues({
+    //   email: '',
+    //   password: ''
+    // })
   }
   return (
     <form onSubmit={handleSubmit}>
@@ -28,6 +37,7 @@ export default function Login() {
         <div className="control no-margin">
           <label htmlFor="email">Email</label>
           <input id="email" type="email" name="email" onChange={(event) => handleInputChange("email", event)} value={enteredValues.email} />
+          <div className="control-error">{emailIsInvalid && <p>Please add valid email address</p>}</div>
         </div>
 
         <div className="control no-margin">
