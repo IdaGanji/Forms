@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Input from "./Input";
 export default function Login() {
   const [enteredValues, setEnteredValues] = useState({
     email: '',
@@ -8,41 +9,26 @@ export default function Login() {
     email: false,
     password: false
   });
-  // the onBlur event helps us know which input field and when it has been touched and finished with
-  // So the user gets a good chance to complete the entering before getting an error message
   const emailIsInvalid = didEdit.email && !enteredValues.email.includes('@')
+  const passsInvalid = didEdit.password && !enteredValues.password.trim().length < 6
 
-
-  // JS Dynamic key vs Fixed key:  
-  // const keyName = "age";
-  // const obj = {
-  //  [keyName]: 25
-  //};
-  // [keyName] dynamically sets "age" as a key in obj.
   const handleInputChange = (identifier, event) => {
     setEnteredValues(prev => ({
       ...prev,
       [identifier]: event.target.value
     })
     )
-    // we set the didEdit for the field that is being typed in to false so that emailIsInvalid doesn´t get true when the user is typing
-    // only after the user has finished
     setDidEdit((prevState) => ({
       ...prevState,
       [identifier]: false
     }))
   }
-  // Validating on every key-stroke
-  // problem is that the error will be shown too early for this usecase
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    // To re-set the form
-    // setEnteredValues({
-    //   email: '',
-    //   password: ''
-    // })
+
   }
-  // event that gets fired when an element loses focus
+
   const handleBlur = (identifier) => {
     setDidEdit((prevState) => ({
       ...prevState,
@@ -55,17 +41,20 @@ export default function Login() {
       <h2>Login</h2>
 
       <div className="control-row">
-        <div className="control no-margin">
-          <label htmlFor="email">Email</label>
-          <input id="email" type="email" name="email" onChange={(event) => handleInputChange("email", event)} value={enteredValues.email}
-            onBlur={() => handleBlur('email')} />
-          <div className="control-error">{emailIsInvalid && <p>Please add valid email address</p>}</div>
-        </div>
 
-        <div className="control no-margin">
-          <label htmlFor="password">Password</label>
-          <input id="password" type="password" name="password" onChange={(event) => handleInputChange("password", event)} value={enteredValues.password} />
-        </div>
+        <Input label="Email" id="email" type="email" name="email"
+          value={enteredValues.email}
+          onChange={(event) => handleInputChange('email', event)}
+          onBlur={() => handleBlur('email')}
+          error={emailIsInvalid && 'Email is invalid'} />
+
+        <Input label="Password" id="password" type="password" name="password"
+          value={enteredValues.password}
+          onChange={(event) => handleInputChange('password', event)}
+          onBlur={() => handleBlur('password')}
+          error={passsInvalid && 'Password is shorter than 6 chars'} />
+
+
       </div>
 
       <p className="form-actions">
